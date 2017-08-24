@@ -1,0 +1,58 @@
+{
+  "name": "weighter",
+  "version": "0.0.1",
+  "description": "Web application to track your weight over time!",
+  "main": "server.js",
+  "scripts": {
+    "test": "jshint . ; nsp check",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradgarropy/weighter.git"
+  },
+  "keywords": [
+    "javascript",
+    "html",
+    "node",
+    "nodejs",
+    "express",
+    "expressjs",
+    "pug",
+    "mongodb",
+    "mongoose",
+    "rest",
+    "rest-api",
+    "web-server",
+    "web-app",
+    "web-application",
+    "passport",
+    "passportjs",
+    "passport-local",
+    "dotenv",
+    "nodemailer"
+  ],
+  "author": "Brad Garropy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bradgarropy/weighter/issues"
+  },
+  "homepage": "https://github.com/bradgarropy/weighter#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "express-validator": "^3.2.1",
+    "helmet": "^3.8.0",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.2",
+    "nodemailer": "^4.0.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "pug": "^2.0.0-rc.2"
+  }
+}
