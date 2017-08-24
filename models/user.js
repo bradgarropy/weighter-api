@@ -1,29 +1,32 @@
-const mongoose = require("mongoose");
-const password = require("../middleware/password");
+const mongoose = require('mongoose');
+const password = require('../middleware/password');
 
 
 // define schema
-var userSchema = mongoose.Schema({
-    first_name:       { type: String, required: true,  unique: false },
-    last_name:        { type: String, required: true,  unique: false },
-    email:            { type: String, required: true,  unique: true  },
-    password:         { type: String, required: true,  unique: false },
-    reset_token:      { type: String, required: false, unique: false },
-    reset_expiration: { type: Date,   required: false, unique: false }
+const userSchema = mongoose.Schema({
+    first_name: { type: String, required: true, unique: false },
+    last_name: { type: String, required: true, unique: false },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, unique: false },
+    reset_token: { type: String, required: false, unique: false },
+    reset_expiration: { type: Date, required: false, unique: false },
 });
 
-// save middleware
-userSchema.pre("save", function(next) {
 
-    let user = this;
+// save middleware
+userSchema.pre('save', function (next) {
+
+    const user = this;
 
     // hash password
-    password.encrypt(user.password, function(err, hash) {
+    password.encrypt(user.password, (err, hash) => {
 
         // encryption error
-        if(err) {
+        if (err) {
+
             console.log(err);
             throw err;
+
         }
 
         user.password = hash;
@@ -32,11 +35,12 @@ userSchema.pre("save", function(next) {
         next();
 
     });
+
 });
 
 
 // create model
-var User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 
 // exports
