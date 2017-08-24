@@ -1,5 +1,5 @@
 {
-  "name": "weighter",
+  "name": "weighter-react-api",
   "version": "0.0.1",
   "description": "Web application to track your weight over time!",
   "main": "server.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bradgarropy/weighter.git"
+    "url": "git+https://github.com/bradgarropy/weighter-react-api.git"
   },
   "keywords": [
     "javascript",
@@ -35,9 +35,9 @@
   "author": "Brad Garropy",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bradgarropy/weighter/issues"
+    "url": "https://github.com/bradgarropy/weighter-react-api/issues"
   },
-  "homepage": "https://github.com/bradgarropy/weighter#readme",
+  "homepage": "https://github.com/bradgarropy/weighter-react-api#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
