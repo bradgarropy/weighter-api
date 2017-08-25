@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
 
 
 // save middleware
-userSchema.pre('save', function (next) {
+userSchema.pre('save', function encryptPassword(next) {
 
     const user = this;
 

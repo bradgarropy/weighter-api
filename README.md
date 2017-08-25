@@ -11,7 +11,7 @@
 First, clone the repository.
 
 ```
-git clone https://github.com/bradgarropy/weighter.git
+git clone https://github.com/bradgarropy/weighter-react-api.git
 ```
 
 Next, install the dependencies.

@@ -27,8 +27,6 @@ mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
 // app settings
 app.set('json spaces', 4);
-app.set('views', './views');
-app.set('view engine', 'pug');
 
 
 // middleware
@@ -43,41 +41,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(validator());
 app.use(flash());
-
-
-// user
-app.use((request, response, next) => {
-
-    if (request.user) {
-
-        response.locals.user = request.user;
-
-    } else {
-
-        response.locals.user = null;
-
-    }
-
-    // next middleware
-    next();
-
-});
-
-
-// messages
-app.use((request, response, next) => {
-
-    // set messages
-    response.locals.success_messages = request.flash('success');
-    response.locals.info_messages = request.flash('info');
-    response.locals.warning_messages = request.flash('warning');
-    response.locals.error_messages = request.flash('error');
-    response.locals.danger_messages = request.flash('danger');
-
-    // next  middleware
-    next();
-
-});
 
 
 // user routes

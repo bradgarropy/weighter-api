@@ -2,9 +2,10 @@
   "name": "weighter-react-api",
   "version": "0.0.1",
   "description": "Web application to track your weight over time!",
-  "main": "server.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server/server.js",
+    "dev": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -59,6 +60,7 @@
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.3.0"
+    "eslint-plugin-react": "^7.3.0",
+    "nodemon": "^1.11.0"
   }
 }
