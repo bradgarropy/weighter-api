@@ -47,7 +47,7 @@ app.use(flash());
 app.use('/user', user);
 
 // weight routes
-app.use('/weight', weight);
+app.use('/api/weight', weight);
 
 
 // start application

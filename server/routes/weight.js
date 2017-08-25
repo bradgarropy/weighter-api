@@ -1,137 +1,140 @@
-const validator = require("express-validator");
-const passport  = require("../middleware/passport");
-const express   = require("express");
-const Weight    = require("../models/weight");
+const express = require('express');
+const Weight = require('../models/weight');
+const moment = require('moment');
 
 
 // create router
 const router = express.Router();
 
 
-router.get("/", passport.ensure_authenticated, function(request, response) {
+// GET /api/weight
+router.get('/', (request, response) => {
 
-    let query = {user_id: request.user._id};
+    const query = {};
 
-    Weight.find(query, function(err, weights) {
+    Weight.find(query, (err, docs) => {
 
-        // db find error
-        if(err) {
-            console.log(err);
-            response.redirect("/");
+        if (err) {
+
+            const data = {
+                message: 'Unable to get weight entries.',
+            };
+
+            response.status(500);
+            response.json(data);
             return;
+
         }
 
-        response.render("weight/weight", {"weights": weights, "moment": require("moment")});
-        return;
+        response.json(docs);
 
     });
+
 });
 
 
-router.post("/", function(request, response) {
+// GET /api/weight/:id
+router.get('/:id', (request, response) => {
 
-    // validation rules
-    request.checkBody("date",   "Date is required.").notEmpty();
-    request.checkBody("date",   "Please enter a valid date.").isDate();
-    request.checkBody("weight", "Weight is required.").notEmpty();
-    request.checkBody("weight", "Please enter a valid weight.").isFloat({min: 0, max: 500});
+    const id = request.params.id;
 
-    // validate
-    request.getValidationResult().then(function(errors) {
+    Weight.findById(id, (err, doc) => {
 
-        // form errors
-        if(!errors.isEmpty()) {
-            response.render("weight/weight", {errors: errors.array()});
+        if (err) {
+
+            const data = {
+                message: `Unable to get weight entry with id ${id}.`,
+            };
+
+            response.status(500);
+            response.json(data);
             return;
+
         }
 
-        // create weight
-        let weight = new Weight();
-        weight.user_id = request.user._id;
-        weight.date    = request.body.date;
-        weight.weight  = request.body.weight;
+        if (!doc) {
 
-        Weight.create(weight, function(err, doc) {
+            const data = {
+                message: `No entry exists with id ${id}.`,
+            };
 
-            // db create error
-            if(err) {
-                console.log(err);
-                response.redirect("/weight");
-                return;
-            }
-
-            // add weight success
-            response.redirect("/weight");
+            response.status(404);
+            response.json(data);
             return;
 
-        });
+        }
+
+        response.json(doc);
+
     });
+
 });
 
 
-router.get("/:id", passport.ensure_authenticated, function(request, response) {
+// POST /api/weight
+router.post('/', (request, response) => {
 
-    let id = request.params.id;
-
-    Weight.findById(id, function(err, weight) {
-
-        // db find error
-        if(err) {
-            console.log(err);
-            response.redirect("/");
-            return;
-        }
-
-        response.render("weight/edit", {"weight": weight, "moment": require("moment")});
-        return;
-
-    });
-});
-
-
-router.patch("/:id", passport.ensure_authenticated, function(request, response) {
-
-    let id = request.params.id;
-
-    let weight = {};
-    weight.date   = request.body.date;
+    // create weight
+    const weight = new Weight();
+    weight.date = request.body.date;
     weight.weight = request.body.weight;
 
-    Weight.findByIdAndUpdate(id, weight, function(err, weight) {
+    Weight.create(weight, (err, doc) => {
 
-        // db find error
-        if(err) {
-            console.log(err);
-            response.redirect("/");
+        if (err) {
+
+            const date = moment(weight.date).format('MM/DD/YYYY');
+            const data = {
+                message: `Weight entry already exists on ${date}.`,
+            };
+
+            response.status(409);
+            response.json(data);
             return;
+
         }
 
-        // update weight success
-        response.json(weight);
-        return;
+        response.json(doc);
 
     });
+
 });
 
 
-router.delete("/:id", function(request, response) {
+// DELETE /api/weight/:id
+router.delete('/:id', (request, response) => {
 
-    let id = request.params.id;
+    const id = request.params.id;
 
-    Weight.findByIdAndRemove(id, function(err, weight) {
+    Weight.findByIdAndRemove(id, (err, doc) => {
 
-        // db remove error
-        if(err) {
-            console.log(err);
-            response.redirect("/weight");
-            return;
+        if (err) {
+
+            const data = {
+                message: `Unable to delete weight entry with id ${id}.`,
+            };
+
+            response.status(500);
+            response.json(data);
+
         }
 
-        // remove weight success
-        response.json(weight);
-        return;
+        if (!doc) {
+
+            const data = {
+                message: `No entry exists with id ${id}.`,
+            };
+
+            response.status(404);
+            response.json(data);
+            return;
+
+        }
+
+        response.json(doc);
 
     });
+
 });
 
 
