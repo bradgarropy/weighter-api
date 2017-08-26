@@ -39,7 +39,13 @@ app.use(cookie());
 app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(validator());
+app.use(validator({
+    errorFormatter: function errorFormatter(param, msg, value) {
+
+        return msg;
+
+    },
+}));
 app.use(flash());
 
 

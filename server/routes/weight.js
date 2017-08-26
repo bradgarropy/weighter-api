@@ -74,27 +74,51 @@ router.get('/:id', (request, response) => {
 // POST /api/weight
 router.post('/', (request, response) => {
 
-    // create weight
-    const weight = new Weight();
-    weight.date = request.body.date;
-    weight.weight = request.body.weight;
+    // validation rules
+    request.checkBody('date', 'Date is required.').notEmpty();
+    request.checkBody('date', `Date is invalid ${request.body.date}.`).isDate();
+    request.checkBody('weight', 'Weight is required.').notEmpty();
+    request.checkBody('weight', `Weight is invalid ${request.body.weight}.`).isFloat({ min: 0, max: 500 });
 
-    Weight.create(weight, (err, doc) => {
+    // validate
+    request.getValidationResult().then((errors) => {
 
-        if (err) {
+        // form errors
+        if (!errors.isEmpty()) {
 
-            const date = moment(weight.date).format('MM/DD/YYYY');
             const data = {
-                message: `Weight entry already exists on ${date}.`,
+                message: errors.useFirstErrorOnly().array()[0],
             };
 
-            response.status(409);
+            response.status(400);
             response.json(data);
             return;
 
         }
 
-        response.json(doc);
+        // create weight
+        const weight = new Weight();
+        weight.date = request.body.date;
+        weight.weight = request.body.weight;
+
+        Weight.create(weight, (err, doc) => {
+
+            if (err) {
+
+                const date = moment(weight.date).format('MM/DD/YYYY');
+                const data = {
+                    message: `Weight entry already exists on ${date}.`,
+                };
+
+                response.status(409);
+                response.json(data);
+                return;
+
+            }
+
+            response.json(doc);
+
+        });
 
     });
 
