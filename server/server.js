@@ -11,7 +11,7 @@ const logger = require('./middleware/logger');
 const weight = require('./routes/weight');
 const flash = require('connect-flash');
 const user = require('./routes/user');
-const path = require('path');
+const cors = require('cors');
 
 
 // create application
@@ -31,10 +31,10 @@ app.set('json spaces', 4);
 
 // middleware
 app.use(helmet());
+app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(logger.log);
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookie());
 app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());

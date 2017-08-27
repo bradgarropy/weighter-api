@@ -140,6 +140,7 @@ router.delete('/:id', (request, response) => {
 
             response.status(500);
             response.json(data);
+            return;
 
         }
 
@@ -156,6 +157,78 @@ router.delete('/:id', (request, response) => {
         }
 
         response.json(doc);
+
+    });
+
+});
+
+
+// PUT /api/weight/:id
+router.put('/:id', (request, response) => {
+
+    const id = request.params.id;
+
+    // validation rules
+    request.checkBody('date', 'Date is required.').notEmpty();
+    request.checkBody('date', `Date is invalid ${request.body.date}.`).isDate();
+    request.checkBody('weight', 'Weight is required.').notEmpty();
+    request.checkBody('weight', `Weight is invalid ${request.body.weight}.`).isFloat({ min: 0, max: 500 });
+
+    // validate
+    request.getValidationResult().then((errors) => {
+
+        // form errors
+        if (!errors.isEmpty()) {
+
+            const data = {
+                message: errors.useFirstErrorOnly().array()[0],
+            };
+
+            response.status(400);
+            response.json(data);
+            return;
+
+        }
+
+        // create weight
+        const weight = {};
+        weight.date = request.body.date;
+        weight.weight = request.body.weight;
+
+        // set  options
+        const options = {
+            new: true,
+        };
+
+        Weight.findByIdAndUpdate(id, weight, options, (err, doc) => {
+
+            if (err) {
+
+                const data = {
+                    message: `Unable to update weight entry with id ${id}.`,
+                };
+
+                response.status(500);
+                response.json(data);
+                return;
+
+            }
+
+            if (!doc) {
+
+                const data = {
+                    message: `No entry exists with id ${id}.`,
+                };
+
+                response.status(404);
+                response.json(data);
+                return;
+
+            }
+
+            response.json(doc);
+
+        });
 
     });
 
