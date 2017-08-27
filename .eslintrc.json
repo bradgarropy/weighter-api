@@ -1,8 +1,10 @@
 {
     "extends": "airbnb",
     "rules": {
+        "linebreak-style": "off",
         "indent": ["error", 4],
         "padded-blocks": ["error", "always"],
+        "no-underscore-dangle": ["error", {"allow": ["_id"]}],
         "react/jsx-indent": ["error", 4]
     },
     "env": {
