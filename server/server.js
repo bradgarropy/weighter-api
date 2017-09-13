@@ -50,7 +50,7 @@ app.use(flash());
 
 
 // user routes
-app.use('/user', user);
+app.use('/api/user', user);
 
 // weight routes
 app.use('/api/weight', weight);
