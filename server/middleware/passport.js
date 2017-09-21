@@ -79,7 +79,6 @@ passport.ensure_authenticated = function ensureAuthenticated(request, response, 
     }
 
     // unauthenticated
-
     request.flash('danger', 'Please login.');
     response.redirect('/user/login');
 

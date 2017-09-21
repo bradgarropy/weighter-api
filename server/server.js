@@ -10,6 +10,7 @@ const helmet = require('helmet');
 const logger = require('./middleware/logger');
 const weight = require('./routes/weight');
 const flash = require('connect-flash');
+const login = require('./routes/login');
 const user = require('./routes/user');
 const cors = require('cors');
 
@@ -51,6 +52,9 @@ app.use(flash());
 
 // user routes
 app.use('/api/user', user);
+
+// login route
+app.use('/api/login', login);
 
 // weight routes
 app.use('/api/weight', weight);

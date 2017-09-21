@@ -244,24 +244,10 @@ router.put('/:id', (request, response) => {
 // old code
 
 
-router.post('/login', (request, response, next) => {
-
-    const options = { successRedirect: '/',
-        failureRedirect: '/user/login',
-        failureFlash: 'Invalid username or password.' };
-
-    // authenticate user
-    passport.authenticate('local', options)(request, response, next);
-
-
-});
-
-
 router.post('/logout', (request, response) => {
 
     request.logout();
     response.redirect('/');
-
 
 });
 

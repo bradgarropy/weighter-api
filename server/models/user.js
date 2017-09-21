@@ -1,5 +1,5 @@
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const password = require('../middleware/password');
 
 
 // define schema
@@ -13,15 +13,42 @@ const userSchema = mongoose.Schema({
 });
 
 
-// save middleware
+// password hash middleware
 userSchema.pre('save', function encryptPassword(next) {
 
     const user = this;
 
     // hash password
-    password.encrypt(user.password, (err, hash) => {
+    bcrypt.genSalt(10, (err, salt) => {
 
-        // encryption error
+        bcrypt.hash(user.password, salt, (err, hash) => {
+
+            if (err) {
+
+                console.log(err);
+                throw err;
+
+            }
+
+            user.password = hash;
+
+            // next middleware
+            next();
+
+        });
+
+    });
+
+});
+
+
+// password compare method
+userSchema.methods.comparePassword = function comparePassword(password, callback) {
+
+    const user = this;
+
+    bcrypt.compare(password, user.password, (err, result) => {
+
         if (err) {
 
             console.log(err);
@@ -29,14 +56,11 @@ userSchema.pre('save', function encryptPassword(next) {
 
         }
 
-        user.password = hash;
-
-        // next middleware
-        next();
+        callback(err, result);
 
     });
 
-});
+};
 
 
 // create model

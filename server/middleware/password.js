@@ -37,7 +37,6 @@ function validate(password, hash, callback) {
 
         callback(err, result);
 
-
     });
 
 }
