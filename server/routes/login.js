@@ -30,6 +30,7 @@ router.post('/', (request, response) => {
 
             response.status(400);
             response.json(data);
+            return;
 
         }
 
