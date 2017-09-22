@@ -1,3 +1,4 @@
+const jsonwebtoken = require('jsonwebtoken');
 const express = require('express');
 const User = require('../models/user');
 
@@ -88,7 +89,20 @@ router.post('/', (request, response) => {
 
                 }
 
-                response.json(user);
+                // create jwt
+                const payload = {
+                    id: user.id,
+                    email: user.email,
+                };
+
+                const jwt = jsonwebtoken.sign(payload, process.env.SECRET);
+
+                // create response
+                const data = {
+                    token: jwt,
+                };
+
+                response.json(data);
 
             });
 
