@@ -1,6 +1,7 @@
 const express = require('express');
 const Weight = require('../models/weight');
 const moment = require('moment');
+const auth = require('../middleware/authentication');
 
 
 // create router
@@ -8,7 +9,7 @@ const router = express.Router();
 
 
 // GET /api/weight
-router.get('/', (request, response) => {
+router.get('/', auth.authenticate, (request, response) => {
 
     const query = {};
 
@@ -73,6 +74,8 @@ router.get('/:id', (request, response) => {
 
 // POST /api/weight
 router.post('/', (request, response) => {
+
+    console.log(request.headers);
 
     // validation rules
     request.checkBody('date', 'Date is required.').notEmpty();

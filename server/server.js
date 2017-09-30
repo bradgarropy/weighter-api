@@ -1,7 +1,6 @@
 const bodyparser = require('body-parser');
 const validator = require('express-validator');
 const mongoose = require('mongoose');
-const passport = require('./middleware/passport');
 const express = require('express');
 const session = require('express-session');
 const cookie = require('cookie-parser');
@@ -38,8 +37,6 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(logger.log);
 app.use(cookie());
 app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(validator({
     errorFormatter: function errorFormatter(param, msg, value) {
 

@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const passport = require('../middleware/passport');
 const password = require('../middleware/password');
 const express = require('express');
 const crypto = require('crypto');
@@ -242,14 +241,6 @@ router.put('/:id', (request, response) => {
 
 
 // old code
-
-
-router.post('/logout', (request, response) => {
-
-    request.logout();
-    response.redirect('/');
-
-});
 
 
 router.post('/profile', (request, response) => {
