@@ -11,7 +11,7 @@ const router = express.Router();
 // GET /api/weight
 router.get('/', auth.authenticate, (request, response) => {
 
-    const query = {};
+    const query = { user_id: request.user._id };
 
     Weight.find(query, (err, docs) => {
 
@@ -35,7 +35,7 @@ router.get('/', auth.authenticate, (request, response) => {
 
 
 // GET /api/weight/:id
-router.get('/:id', (request, response) => {
+router.get('/:id', auth.authenticate, (request, response) => {
 
     const id = request.params.id;
 
@@ -73,9 +73,7 @@ router.get('/:id', (request, response) => {
 
 
 // POST /api/weight
-router.post('/', (request, response) => {
-
-    console.log(request.headers);
+router.post('/', auth.authenticate, (request, response) => {
 
     // validation rules
     request.checkBody('date', 'Date is required.').notEmpty();
@@ -101,6 +99,7 @@ router.post('/', (request, response) => {
 
         // create weight
         const weight = new Weight();
+        weight.user_id = request.user._id;
         weight.date = request.body.date;
         weight.weight = request.body.weight;
 
