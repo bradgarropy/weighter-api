@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
-const password = require('../middleware/password');
 const express = require('express');
 const crypto = require('crypto');
 const User = require('../models/user');
+const auth = require('../middleware/authentication');
 
 
 // create router
@@ -241,144 +241,6 @@ router.put('/:id', (request, response) => {
 
 
 // old code
-
-
-router.post('/profile', (request, response) => {
-
-    // validation rules
-    request.checkBody('first_name', 'First name is required.').notEmpty();
-    request.checkBody('last_name', 'Last name is required.').notEmpty();
-    request.checkBody('email', 'Email is required.').notEmpty();
-    request.checkBody('email', 'Please enter a valid email.').isEmail();
-
-    // validate
-    request.getValidationResult().then((errors) => {
-
-        // form errors
-        if (!errors.isEmpty()) {
-
-            errors.array().forEach((error) => {
-
-                request.flash('danger', error.msg);
-
-            });
-
-            response.redirect('/user/profile');
-            return;
-
-        }
-
-        // create user
-        const user = {};
-        user.first_name = request.body.first_name;
-        user.last_name = request.body.last_name;
-        user.email = request.body.email;
-
-        User.findByIdAndUpdate(request.user._id, user, (err, doc) => {
-
-            // db create error
-            if (err) {
-
-                request.flash('danger', 'We encountered an issue updating your user profile.');
-                response.redirect('/user/profile');
-                return;
-
-            }
-
-            // profile update success
-            response.redirect('/user/profile');
-
-
-        });
-
-    });
-
-});
-
-
-router.post('/password', (request, response) => {
-
-    // validation rules
-    request.checkBody('current_password', 'Current password is required.').notEmpty();
-    request.checkBody('new_password', 'New password is required.').notEmpty();
-    request.checkBody('confirmation', 'Password confirmation is required.').notEmpty();
-    request.checkBody('confirmation', 'Passwords must match.').equals(request.body.new_password);
-
-    // validate
-    request.getValidationResult().then((errors) => {
-
-        // form errors
-        if (!errors.isEmpty()) {
-
-            errors.array().forEach((error) => {
-
-                request.flash('danger', error.msg);
-
-            });
-
-            response.redirect('/user/password');
-            return;
-
-        }
-
-        password.validate(request.body.current_password, request.user.password, (err, result) => {
-
-            // password validate error
-            if (err) {
-
-                request.flash('danger', 'We encountered an issue validating your password.');
-                response.redirect('/user/password');
-                return;
-
-            }
-
-            if (!result) {
-
-                request.flash('danger', 'Incorrect password.');
-                response.redirect('/user/password');
-                return;
-
-            }
-
-            password.encrypt(request.body.new_password, (err, hash) => {
-
-                // password validate error
-                if (err) {
-
-                    request.flash('danger', 'We encountered an issue encrypting your password.');
-                    response.redirect('/user/password');
-                    return;
-
-                }
-
-                // create user
-                const user = {};
-                user.password = hash;
-
-                User.findByIdAndUpdate(request.user._id, user, (err, doc) => {
-
-                    // db create error
-                    if (err) {
-
-                        request.flash('danger', 'We encountered an issue updating your password.');
-                        response.redirect('/user/profile');
-                        return;
-
-                    }
-
-                    // password update success
-                    response.redirect('/user/logout');
-
-
-                });
-
-            });
-
-        });
-
-    });
-
-});
 
 
 router.post('/forgot', (request, response) => {

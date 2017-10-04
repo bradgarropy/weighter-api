@@ -1,14 +1,12 @@
 const bodyparser = require('body-parser');
 const validator = require('express-validator');
 const mongoose = require('mongoose');
+const password = require('./routes/password');
 const express = require('express');
-const session = require('express-session');
-const cookie = require('cookie-parser');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
 const logger = require('./middleware/logger');
 const weight = require('./routes/weight');
-const flash = require('connect-flash');
 const login = require('./routes/login');
 const user = require('./routes/user');
 const cors = require('cors');
@@ -35,8 +33,6 @@ app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(logger.log);
-app.use(cookie());
-app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(validator({
     errorFormatter: function errorFormatter(param, msg, value) {
 
@@ -44,7 +40,6 @@ app.use(validator({
 
     },
 }));
-app.use(flash());
 
 
 // user routes
@@ -52,6 +47,9 @@ app.use('/api/user', user);
 
 // login route
 app.use('/api/login', login);
+
+// password route
+app.use('/api/password', password);
 
 // weight routes
 app.use('/api/weight', weight);
