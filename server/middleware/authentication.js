@@ -5,6 +5,19 @@ const User = require('../models/user');
 function authenticate(request, response, next) {
 
     const authorization = request.headers.authorization;
+
+    if (!authorization) {
+
+        const data = {
+            message: 'Please provide a token.',
+        };
+
+        response.status(500);
+        response.json(data);
+        return;
+
+    }
+
     const token = authorization.split(' ')[1];
 
     jsonwebtoken.verify(token, process.env.SECRET, (err, decoded) => {
