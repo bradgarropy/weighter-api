@@ -77,7 +77,7 @@ router.post('/', (request, response) => {
     request.checkBody('first_name', 'First name is required.').notEmpty();
     request.checkBody('last_name', 'Last name is required.').notEmpty();
     request.checkBody('email', 'Email is required.').notEmpty();
-    request.checkBody('email', `Email is invalid ${request.body.email}`).isEmail();
+    request.checkBody('email', 'Email is invalid.').isEmail();
     request.checkBody('password', 'Password is required.').notEmpty();
 
     // validate
@@ -87,7 +87,7 @@ router.post('/', (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                errors: errors.mapped(),
+                errors: errors.useFirstErrorOnly().mapped(),
             };
 
             response.status(400);
@@ -173,7 +173,7 @@ router.put('/:id', (request, response) => {
     request.checkBody('first_name', 'First name is required.').notEmpty();
     request.checkBody('last_name', 'Last name is required.').notEmpty();
     request.checkBody('email', 'Email is required.').notEmpty();
-    request.checkBody('email', `Email is invalid ${request.body.email}`).isEmail();
+    request.checkBody('email', 'Email is invalid.').isEmail();
 
     // validate
     request.getValidationResult().then((errors) => {
@@ -182,7 +182,7 @@ router.put('/:id', (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                errors: errors.mapped(),
+                errors: errors.useFirstErrorOnly().mapped(),
             };
 
             response.status(400);

@@ -15,7 +15,7 @@ router.post('/', (request, response) => {
 
     // validation rules
     request.checkBody('email', 'Email is required.').notEmpty();
-    request.checkBody('email', `Email is invalid ${email}`).isEmail();
+    request.checkBody('email', 'Email is invalid.').isEmail();
     request.checkBody('password', 'Password is required.').notEmpty();
 
     // validate
@@ -25,7 +25,7 @@ router.post('/', (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                errors: errors.mapped(),
+                errors: errors.useFirstErrorOnly().mapped(),
             };
 
             response.status(400);

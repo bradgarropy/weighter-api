@@ -77,9 +77,9 @@ router.post('/', auth.authenticate, (request, response) => {
 
     // validation rules
     request.checkBody('date', 'Date is required.').notEmpty();
-    request.checkBody('date', `Date is invalid ${request.body.date}.`).isDate();
+    request.checkBody('date', 'Date is invalid.').isDate();
     request.checkBody('weight', 'Weight is required.').notEmpty();
-    request.checkBody('weight', `Weight is invalid ${request.body.weight}.`).isFloat({ min: 0, max: 500 });
+    request.checkBody('weight', 'Weight is invalid.').isFloat({ min: 0, max: 500 });
 
     // validate
     request.getValidationResult().then((errors) => {
@@ -88,7 +88,7 @@ router.post('/', auth.authenticate, (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                errors: errors.mapped(),
+                errors: errors.useFirstErrorOnly().mapped(),
             };
 
             response.status(400);
@@ -172,9 +172,9 @@ router.put('/:id', (request, response) => {
 
     // validation rules
     request.checkBody('date', 'Date is required.').notEmpty();
-    request.checkBody('date', `Date is invalid ${request.body.date}.`).isDate();
+    request.checkBody('date', 'Date is invalid.').isDate();
     request.checkBody('weight', 'Weight is required.').notEmpty();
-    request.checkBody('weight', `Weight is invalid ${request.body.weight}.`).isFloat({ min: 0, max: 500 });
+    request.checkBody('weight', 'Weight is invalid.').isFloat({ min: 0, max: 500 });
 
     // validate
     request.getValidationResult().then((errors) => {
@@ -183,7 +183,7 @@ router.put('/:id', (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                errors: errors.mapped(),
+                errors: errors.useFirstErrorOnly().mapped(),
             };
 
             response.status(400);

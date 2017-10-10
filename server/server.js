@@ -36,13 +36,7 @@ app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(logger.log);
-app.use(validator({
-    errorFormatter: function errorFormatter(param, msg, value) {
-
-        return msg;
-
-    },
-}));
+app.use(validator());
 
 
 // user routes

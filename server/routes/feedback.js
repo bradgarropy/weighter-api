@@ -22,7 +22,7 @@ router.post('/', auth.authenticate, (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                errors: errors.mapped(),
+                errors: errors.useFirstErrorOnly().mapped(),
             };
 
             response.status(400);
