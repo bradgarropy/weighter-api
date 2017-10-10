@@ -87,7 +87,7 @@ router.post('/', (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                message: errors.useFirstErrorOnly().array()[0],
+                errors: errors.mapped(),
             };
 
             response.status(400);
@@ -182,7 +182,7 @@ router.put('/:id', (request, response) => {
         if (!errors.isEmpty()) {
 
             const data = {
-                message: errors.useFirstErrorOnly().array()[0],
+                errors: errors.mapped(),
             };
 
             response.status(400);
