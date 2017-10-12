@@ -79,6 +79,8 @@ router.post('/', (request, response) => {
     request.checkBody('email', 'Email is required.').notEmpty();
     request.checkBody('email', 'Email is invalid.').isEmail();
     request.checkBody('password', 'Password is required.').notEmpty();
+    request.checkBody('confirmation', 'Password confirmation is required.').notEmpty();
+    request.checkBody('confirmation', 'Passwords must match.').equals(request.body.password);
 
     // validate
     request.getValidationResult().then((errors) => {
